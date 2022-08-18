@@ -16,7 +16,7 @@ public class ShipScript : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.AddRelativeForce(Vector3.down * Time.deltaTime * engineSpeed);
+        rb.AddRelativeForce(Vector3.up * Time.deltaTime * engineSpeed);
         transform.position = new Vector3(-40,-20,2200);
     }
 
@@ -35,4 +35,9 @@ public class ShipScript : MonoBehaviour
         }
     }
     //Input.GetAxis("Mouse X") * -1 Input.GetAxis("Mouse Y") * 7 / 3
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("collided");
+    }
 }
