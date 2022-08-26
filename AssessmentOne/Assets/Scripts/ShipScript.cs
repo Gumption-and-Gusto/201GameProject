@@ -5,6 +5,8 @@ using UnityEngine;
 public class ShipScript : MonoBehaviour
 {
     float timer = 3;
+    public float deathTimer = 1;
+    bool deathTimerOn = false;
     Vector3 mouseMoves;
     [SerializeField]
     float strafeSpeed;
@@ -12,6 +14,14 @@ public class ShipScript : MonoBehaviour
     float engineSpeed;
     Rigidbody rb;
     public Transform shipTransform;
+    [SerializeField]
+    ParticleSystem explosion;
+    [SerializeField]
+    GameObject body;
+    [SerializeField]
+    GameObject sphere;
+    [SerializeField]
+    ParticleSystem exhaust;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +34,7 @@ public class ShipScript : MonoBehaviour
     void Update()
     {
         shipTransform = transform;
-        if (timer < 0) 
+        if (timer < 0 && deathTimerOn == false) 
         {
             mouseMoves = new Vector3(Input.GetAxis("Mouse X") * -1, Input.GetAxis("Mouse Y") * 7 / 3, 0);
             rb.AddForce(mouseMoves * Time.deltaTime * strafeSpeed);
@@ -33,11 +43,20 @@ public class ShipScript : MonoBehaviour
         {
             timer -= Time.deltaTime;
         }
+        if (deathTimerOn == true && deathTimer > 0)
+        {
+            deathTimer -= Time.deltaTime;
+        }
     }
-    //Input.GetAxis("Mouse X") * -1 Input.GetAxis("Mouse Y") * 7 / 3
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("collided");
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        explosion.Play();
+        deathTimerOn = true;
+        body.GetComponent<Renderer>().enabled = false;
+        sphere.GetComponent<Renderer>().enabled = false;
+        exhaust.Stop();
     }
 }
