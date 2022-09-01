@@ -348,7 +348,9 @@
 "Assets/Scripts/CameraScript.cs"
 "Assets/Scripts/DeathScreenScript.cs"
 "Assets/Scripts/HUDScript.cs"
+"Assets/Scripts/MainMenuScript.cs"
 "Assets/Scripts/ShipScript.cs"
+"Assets/Scripts/VictoryScreenScript.cs"
 -langversion:9.0
 
 /deterministic

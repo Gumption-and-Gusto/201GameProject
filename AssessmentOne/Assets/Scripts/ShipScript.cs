@@ -6,8 +6,12 @@ public class ShipScript : MonoBehaviour
 {
     float timer = 3;
     public float deathTimer = 1;
+    public float winTimer = 1;
     bool deathTimerOn = false;
+    bool winTimerOn = false;
     Vector3 mouseMoves;
+    [SerializeField]
+    GameObject reactorStream;
     [SerializeField]
     float strafeSpeed;
     [SerializeField]
@@ -17,11 +21,15 @@ public class ShipScript : MonoBehaviour
     [SerializeField]
     ParticleSystem explosion;
     [SerializeField]
+    ParticleSystem nuclearDetonation;
+    [SerializeField]
     GameObject body;
     [SerializeField]
     GameObject sphere;
     [SerializeField]
     ParticleSystem exhaust;
+    [SerializeField]
+    CanvasGroup whiteout;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,16 +55,30 @@ public class ShipScript : MonoBehaviour
         {
             deathTimer -= Time.deltaTime;
         }
+        if (winTimerOn == true && winTimer > 0)
+        {
+            winTimer -= Time.deltaTime;
+            whiteout.alpha += Time.deltaTime;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        explosion.Play();
-        deathTimerOn = true;
         body.GetComponent<Renderer>().enabled = false;
         sphere.GetComponent<Renderer>().enabled = false;
         exhaust.Stop();
+        if (collision.gameObject == reactorStream)
+        {
+            nuclearDetonation.Play();
+            winTimerOn = true;
+        }
+        else {
+
+            explosion.Play();
+            deathTimerOn = true;
+
+        }
     }
 }
