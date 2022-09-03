@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DeathScreenScript : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class DeathScreenScript : MonoBehaviour
     [SerializeField]
     GameObject ship;
     ShipScript shipScript;
+    [SerializeField]
+    VictoryScreenScript victoryScreenScript;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,10 +22,15 @@ public class DeathScreenScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (shipScript.deathTimer <= 0)
+        if (shipScript.deathTimer <= 0 && !victoryScreenScript.succeeded)
         {
             deathScreen.SetActive(true);
             deathScreen.GetComponent<CanvasGroup>().alpha += 0.7f * Time.deltaTime;
         }
+    }
+
+    public void Redeploy()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

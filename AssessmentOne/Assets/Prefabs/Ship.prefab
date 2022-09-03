@@ -48,7 +48,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741860962430704580}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a68dfc80d603cd047b798f3caabb2529, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9755,7 +9755,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5452047723958968917}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -9768,7 +9768,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a68dfc80d603cd047b798f3caabb2529, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14628,8 +14628,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8835844565550919149}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: 0.147, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+  m_LocalPosition: {x: 25.348742, y: 22.008474, z: -4291.553}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14667,16 +14667,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3997abc5a37d7f64593970d933edaa5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathTimer: 1
-  winTimer: 1
+  deathTimer: -0.0022549652
+  winTimer: -0.0020293759
   reactorStream: {fileID: 0}
   strafeSpeed: 2000000
-  engineSpeed: 20000000
+  engineSpeed: 550000
   shipTransform: {fileID: 8991059018585703933}
   explosion: {fileID: 6705328206147519785}
+  nuclearDetonation: {fileID: 8152156757458943323}
   body: {fileID: 1741860962430704580}
   sphere: {fileID: 5452047723958968917}
   exhaust: {fileID: 7522264835331090891}
+  whiteout: {fileID: 0}
+  pauseScript: {fileID: 0}
 --- !u!54 &5069315855454378494
 Rigidbody:
   m_ObjectHideFlags: 0

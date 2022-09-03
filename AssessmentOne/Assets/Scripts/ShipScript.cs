@@ -30,19 +30,30 @@ public class ShipScript : MonoBehaviour
     ParticleSystem exhaust;
     [SerializeField]
     CanvasGroup whiteout;
+    [SerializeField]
+    PauseScript pauseScript;
+    Vector3 startPosition = new(0,0,0);
     // Start is called before the first frame update
     void Start()
     {
+        pauseScript.Unpause();
         rb = GetComponent<Rigidbody>();
-        rb.AddRelativeForce(Vector3.up * Time.deltaTime * engineSpeed);
-        transform.position = new Vector3(-40,-20,2200);
-    }
-
+        transform.position = new Vector3(-40,-20, 2200);
+        startPosition = transform.position;
+        if (startPosition == transform.position)
+        {
+            rb.AddRelativeForce(Vector3.up * engineSpeed);
+        }
+        deathTimer = 1;
+        winTimer = 1;
+        body.GetComponent<Renderer>().enabled = true;
+        sphere.GetComponent<Renderer>().enabled = true;
+    }   
     // Update is called once per frame
     void Update()
     {
         shipTransform = transform;
-        if (timer < 0 && deathTimerOn == false) 
+        if (timer < 0 && deathTimerOn == false && pauseScript.paused == false) 
         {
             mouseMoves = new Vector3(Input.GetAxis("Mouse X") * -1, Input.GetAxis("Mouse Y") * 7 / 3, 0);
             rb.AddForce(mouseMoves * Time.deltaTime * strafeSpeed);
