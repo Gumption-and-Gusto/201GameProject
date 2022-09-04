@@ -9,6 +9,7 @@ public class ShipScript : MonoBehaviour
     public float winTimer = 1;
     bool deathTimerOn = false;
     bool winTimerOn = false;
+    bool commanderVisible;
     Vector3 mouseMoves;
     [SerializeField]
     GameObject reactorStream;
@@ -32,10 +33,23 @@ public class ShipScript : MonoBehaviour
     CanvasGroup whiteout;
     [SerializeField]
     PauseScript pauseScript;
+    [SerializeField]
+    CanvasGroup commanderPortrait;
+    public AudioClip[] lines;
+    AudioSource audioSource;
+    [SerializeField]
+    Collider reactorTrigger;
     Vector3 startPosition = new(0,0,0);
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        commanderPortrait.alpha = 0;
+        FadeInCommander();
+        audioSource.clip = lines[Random.Range(4, 7)];
+        Invoke("SayLine", 0.5f);
+        Invoke("FadeOutCommander", 0.5f + audioSource.clip.length);
+
         pauseScript.Unpause();
         rb = GetComponent<Rigidbody>();
         transform.position = new Vector3(-40,-20, 2200);
@@ -71,6 +85,14 @@ public class ShipScript : MonoBehaviour
             winTimer -= Time.deltaTime;
             whiteout.alpha += Time.deltaTime;
         }
+        if (commanderVisible && commanderPortrait.alpha < 1)
+        {
+            commanderPortrait.alpha += 10 * Time.deltaTime;
+        }
+        else if (!commanderVisible && commanderPortrait.alpha > 0)
+        {
+            commanderPortrait.alpha -= 5 * Time.deltaTime;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -82,14 +104,45 @@ public class ShipScript : MonoBehaviour
         exhaust.Stop();
         if (collision.gameObject == reactorStream)
         {
-            nuclearDetonation.Play();
+            if (!winTimerOn)
+            {
+                nuclearDetonation.Play();
+                audioSource.clip = lines[Random.Range(16, 19)];
+                Invoke("SayLine", 2.1f);
+            }
             winTimerOn = true;
         }
-        else {
-
+        else if (!winTimerOn) {
             explosion.Play();
             deathTimerOn = true;
+            audioSource.clip = lines[Random.Range(0, 3)];
+            Invoke("SayLine", 0.7f);
+        }
+    }
 
+    public void FadeInCommander()
+    {
+        commanderVisible = true;
+    }
+
+    public void FadeOutCommander()
+    {
+        commanderVisible = false;
+    }
+
+    void SayLine()
+    {
+        audioSource.Play();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other = reactorTrigger)
+        {
+            audioSource.clip = lines[Random.Range(8, 11)];
+            FadeInCommander();
+            Invoke("SayLine", 0.5f);
+            Invoke("FadeOutCommander", 0.5f + audioSource.clip.length);
         }
     }
 }
