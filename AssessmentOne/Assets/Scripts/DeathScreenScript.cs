@@ -12,6 +12,8 @@ public class DeathScreenScript : MonoBehaviour
     ShipScript shipScript;
     [SerializeField]
     VictoryScreenScript victoryScreenScript;
+    [SerializeField]
+    CanvasGroup commander;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +28,7 @@ public class DeathScreenScript : MonoBehaviour
         {
             deathScreen.SetActive(true);
             deathScreen.GetComponent<CanvasGroup>().alpha += 0.7f * Time.deltaTime;
+            commander.alpha = 0;
         }
     }
 

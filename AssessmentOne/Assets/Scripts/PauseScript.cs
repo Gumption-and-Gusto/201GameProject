@@ -2,19 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseScript : MonoBehaviour
 {
     [SerializeField]
     GameObject pause;
     [SerializeField]
+    GameObject options;
+    [SerializeField]
     GameObject ship;
+    [SerializeField]
+    Slider musicSlider;
+    [SerializeField]
+    Slider SFXSlider;
+    [SerializeField]
+    Slider voiceSlider;
+    [SerializeField]
+    Slider sensitivitySlider;
+    [SerializeField]
+    AudioSource musicSource;
+    [SerializeField]
+    AudioSource SFXSource;
+    [SerializeField]
+    AudioSource voiceSource;
+
     public bool paused;
     // Start is called before the first frame update
     void Start()
     {
+        options.SetActive(false);
+        musicSource.volume = PlayerPrefs.GetFloat("MusicVolume");
+        SFXSource.volume = PlayerPrefs.GetFloat("SFXVolume");
+        voiceSource.volume = PlayerPrefs.GetFloat("VoiceVolume");
+        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+        voiceSlider.value = PlayerPrefs.GetFloat("VoiceVolume");
+        sensitivitySlider.value = PlayerPrefs.GetFloat("MouseSensitivity");
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -44,8 +69,43 @@ public class PauseScript : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void Options()
+    {
+        options.SetActive(true);
+    }
+    public void Back()
+    {
+        options.SetActive(false);
+    }
+
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
+        Time.timeScale = 1;
+    }
+
+    public void SaveMusicVolume()
+    {
+        PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
+        musicSource.volume = musicSlider.value;
+    }
+    public void SaveSFXVolume()
+    {
+        PlayerPrefs.SetFloat("SFXVolume", SFXSlider.value);
+        SFXSource.volume = SFXSlider.value;
+    }
+    public void SaveVoiceVolume()
+    {
+        PlayerPrefs.SetFloat("VoiceVolume", voiceSlider.value);
+        voiceSource.volume = voiceSlider.value;
+    }
+    public void SaveMouseSensistivity()
+    {
+        PlayerPrefs.SetFloat("MouseSensitivity", sensitivitySlider.value);
+    }
+    public void Quit()
+    {
+        Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 }

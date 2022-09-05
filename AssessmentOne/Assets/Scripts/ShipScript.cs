@@ -13,8 +13,7 @@ public class ShipScript : MonoBehaviour
     Vector3 mouseMoves;
     [SerializeField]
     GameObject reactorStream;
-    [SerializeField]
-    float strafeSpeed;
+    public float strafeSpeed;
     [SerializeField]
     float engineSpeed;
     Rigidbody rb;
@@ -36,19 +35,40 @@ public class ShipScript : MonoBehaviour
     [SerializeField]
     CanvasGroup commanderPortrait;
     public AudioClip[] lines;
-    AudioSource audioSource;
+    public AudioClip[] SFX;
+    AudioSource voiceLines;
+    [SerializeField]
+    AudioSource SFXSource;
+    [SerializeField]
+    AudioSource music;
     [SerializeField]
     Collider reactorTrigger;
+    [SerializeField]
+    ParticleSystem steeringTop;
+    [SerializeField]
+    ParticleSystem steeringLeft;
+    [SerializeField]
+    ParticleSystem steeringBottom;
+    [SerializeField]
+    ParticleSystem steeringRight;
+    [SerializeField]
+    ParticleSystem steeringTL;
+    [SerializeField]
+    ParticleSystem steeringBL;
+    [SerializeField]
+    ParticleSystem steeringBR;
+    [SerializeField]
+    ParticleSystem steeringTR;
     Vector3 startPosition = new(0,0,0);
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        voiceLines = GetComponent<AudioSource>();
         commanderPortrait.alpha = 0;
         FadeInCommander();
-        audioSource.clip = lines[Random.Range(4, 7)];
+        voiceLines.clip = lines[Random.Range(4, 7)];
         Invoke("SayLine", 0.5f);
-        Invoke("FadeOutCommander", 0.5f + audioSource.clip.length);
+        Invoke("FadeOutCommander", 0.5f + voiceLines.clip.length);
 
         pauseScript.Unpause();
         rb = GetComponent<Rigidbody>();
@@ -70,7 +90,39 @@ public class ShipScript : MonoBehaviour
         if (timer < 0 && deathTimerOn == false && pauseScript.paused == false) 
         {
             mouseMoves = new Vector3(Input.GetAxis("Mouse X") * -1, Input.GetAxis("Mouse Y") * 7 / 3, 0);
-            rb.AddForce(mouseMoves * Time.deltaTime * strafeSpeed);
+            rb.AddForce(mouseMoves * Time.deltaTime * strafeSpeed * (PlayerPrefs.GetFloat("MouseSensitivity") + 1));
+            if (mouseMoves.x < 0)
+            {
+                steeringLeft.Emit((int)((mouseMoves.x - 0.3) * -2));
+            }
+            if (mouseMoves.x > 0)
+            {
+                steeringRight.Emit((int)((mouseMoves.x + 0.3) * 2));
+            }
+            if (mouseMoves.y < 0)
+            {
+                steeringTop.Emit((int)((mouseMoves.y - 0.3) * -2));
+            }
+            if (mouseMoves.y > 0)
+            {
+                steeringBottom.Emit((int)((mouseMoves.y + 0.3) * 2));
+            }
+            if(mouseMoves.x < 0 && mouseMoves.y < 0)
+            {
+                steeringTL.Emit((int)((mouseMoves.y - 0.3) * 2) * (int)((mouseMoves.x - 0.3) * 2));
+            }
+            if (mouseMoves.x < 0 && mouseMoves.y > 0)
+            {
+                steeringBL.Emit((int)((mouseMoves.y + 0.3) * 2) * (int)((mouseMoves.x - 0.3) * -2));
+            }
+            if (mouseMoves.x > 0 && mouseMoves.y > 0)
+            {
+                steeringBR.Emit((int)((mouseMoves.y + 0.3) * 2) * (int)((mouseMoves.x + 0.3)*2));
+            }
+            if (mouseMoves.x > 0 && mouseMoves.y < 0)
+            {
+                steeringTR.Emit((int)((mouseMoves.y - 0.3) * -2) * (int)((mouseMoves.x + 0.3) * 2));
+            }
         }
         else
         {
@@ -93,6 +145,14 @@ public class ShipScript : MonoBehaviour
         {
             commanderPortrait.alpha -= 5 * Time.deltaTime;
         }
+        if (voiceLines.isPlaying && music.volume > 0.05f)
+        {
+            music.volume = 0.05f;
+        }
+        if (!voiceLines.isPlaying && music.volume < PlayerPrefs.GetFloat("MusicVolume"))
+        {
+            music.volume += Time.deltaTime;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -106,17 +166,21 @@ public class ShipScript : MonoBehaviour
         {
             if (!winTimerOn)
             {
-                nuclearDetonation.Play();
-                audioSource.clip = lines[Random.Range(16, 19)];
+                SFXSource.clip = SFX[1];
+                SFXSource.Play();
+                voiceLines.clip = lines[Random.Range(16, 19)];
                 Invoke("SayLine", 2.1f);
+                nuclearDetonation.Play();
             }
             winTimerOn = true;
         }
         else if (!winTimerOn) {
-            explosion.Play();
+            SFXSource.clip = SFX[0];
+            SFXSource.Play();
             deathTimerOn = true;
-            audioSource.clip = lines[Random.Range(0, 3)];
+            voiceLines.clip = lines[Random.Range(0, 3)];
             Invoke("SayLine", 0.7f);
+            explosion.Play();
         }
     }
 
@@ -132,17 +196,17 @@ public class ShipScript : MonoBehaviour
 
     void SayLine()
     {
-        audioSource.Play();
+        voiceLines.Play();
     }
 
     private void OnTriggerExit(Collider other)
     {
         if(other = reactorTrigger)
         {
-            audioSource.clip = lines[Random.Range(8, 11)];
+            voiceLines.clip = lines[Random.Range(8, 11)];
             FadeInCommander();
             Invoke("SayLine", 0.5f);
-            Invoke("FadeOutCommander", 0.5f + audioSource.clip.length);
+            Invoke("FadeOutCommander", 0.5f + voiceLines.clip.length);
         }
     }
 }

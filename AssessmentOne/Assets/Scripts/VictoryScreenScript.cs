@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class VictoryScreenScript : MonoBehaviour
 {
@@ -25,12 +26,15 @@ public class VictoryScreenScript : MonoBehaviour
     {
         if (shipScript.winTimer <= 0)
         {
-            Debug.Log("VSS Update");
-            Debug.Log(victoryScreen.activeSelf);
             victoryScreen.SetActive(true);
             succeeded = true;
             victoryScreen.GetComponent<CanvasGroup>().alpha += 0.7f * Time.deltaTime;
             whiteout.alpha -= 0.1f * Time.deltaTime;
         }
+    }
+
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
