@@ -66,6 +66,7 @@ public class PauseScript : MonoBehaviour
     {
         paused = false;
         pause.SetActive(false);
+        options.SetActive(false);
         Time.timeScale = 1;
     }
 

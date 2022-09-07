@@ -123,9 +123,9 @@ public class MainMenuScript : MonoBehaviour
     }
     public void LaunchIntroCinematic()
     {
-        if (music.volume > 0.2)
+        if (music.volume > 0.1)
         {
-            music.volume = 0.2f;
+            music.volume = 0.1f;
         }
         Invoke("LaunchLevel1", introMonologue.clip.length + 3);
         mainMenu.SetActive(false);

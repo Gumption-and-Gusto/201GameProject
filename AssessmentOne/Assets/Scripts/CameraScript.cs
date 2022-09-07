@@ -19,6 +19,13 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = shipTransform.position + cameraOffset;
+        if (shipTransform.position.y < 48)
+        {
+            transform.position = shipTransform.position + cameraOffset;
+        }
+        else
+        {
+            transform.position = new Vector3(shipTransform.position.x, 48, shipTransform.position.z) + cameraOffset;
+        }
     }
 }
