@@ -26,12 +26,11 @@ public class PauseScript : MonoBehaviour
     AudioSource SFXSource;
     [SerializeField]
     AudioSource voiceSource;
-
     public bool paused;
-    // Start is called before the first frame update
     void Start()
     {
         options.SetActive(false);
+        //set sliders to match preferences and set volumes appropriately
         musicSource.volume = PlayerPrefs.GetFloat("MusicVolume");
         SFXSource.volume = PlayerPrefs.GetFloat("SFXVolume");
         voiceSource.volume = PlayerPrefs.GetFloat("VoiceVolume");
@@ -84,7 +83,13 @@ public class PauseScript : MonoBehaviour
         SceneManager.LoadScene(0);
         Time.timeScale = 1;
     }
+    public void Quit()
+    {
+        Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false;
+    }
 
+    //Save preferences
     public void SaveMusicVolume()
     {
         PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
@@ -103,10 +108,5 @@ public class PauseScript : MonoBehaviour
     public void SaveMouseSensistivity()
     {
         PlayerPrefs.SetFloat("MouseSensitivity", sensitivitySlider.value);
-    }
-    public void Quit()
-    {
-        Application.Quit();
-        UnityEditor.EditorApplication.isPlaying = false;
     }
 }

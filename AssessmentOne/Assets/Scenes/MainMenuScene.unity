@@ -2368,7 +2368,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 923402800}
         m_TargetAssemblyTypeName: MainMenuScript, Assembly-CSharp
-        m_MethodName: LaunchLevel1
+        m_MethodName: Mission3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2789,7 +2789,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 923402800}
         m_TargetAssemblyTypeName: MainMenuScript, Assembly-CSharp
-        m_MethodName: LaunchLevel1
+        m_MethodName: Mission2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3166,6 +3166,10 @@ MonoBehaviour:
   slide2: {fileID: 2090451040}
   slide3: {fileID: 1316732730}
   slide4: {fileID: 2000317257}
+  missionButtons:
+  - {fileID: 1987121156}
+  - {fileID: 840963492}
+  - {fileID: 608867129}
 --- !u!82 &923402801
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6489,7 +6493,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 923402800}
         m_TargetAssemblyTypeName: MainMenuScript, Assembly-CSharp
-        m_MethodName: LaunchLevel1
+        m_MethodName: Mission1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

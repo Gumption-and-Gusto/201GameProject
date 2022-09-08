@@ -13,7 +13,6 @@ public class VictoryScreenScript : MonoBehaviour
     [SerializeField]
     CanvasGroup whiteout;
     public bool succeeded;
-    // Start is called before the first frame update
     void Start()
     {
         succeeded = false;
@@ -21,11 +20,12 @@ public class VictoryScreenScript : MonoBehaviour
         victoryScreen.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //Timer in the ship script sets this screen to begin fading in
         if (shipScript.winTimer <= 0)
         {
+            PlayerPrefs.SetFloat("Progress", SceneManager.GetActiveScene().buildIndex + 1);
             victoryScreen.SetActive(true);
             succeeded = true;
             victoryScreen.GetComponent<CanvasGroup>().alpha += 0.7f * Time.deltaTime;

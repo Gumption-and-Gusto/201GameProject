@@ -14,16 +14,15 @@ public class DeathScreenScript : MonoBehaviour
     VictoryScreenScript victoryScreenScript;
     [SerializeField]
     CanvasGroup commander;
-    // Start is called before the first frame update
     void Start()
     {
         shipScript = ship.GetComponent<ShipScript>();
         deathScreen.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //Timer in ship script triggers fade in screen on death
         if (shipScript.deathTimer <= 0 && !victoryScreenScript.succeeded)
         {
             deathScreen.SetActive(true);

@@ -34,14 +34,17 @@ public class MainMenuScript : MonoBehaviour
     CanvasGroup slide3;
     [SerializeField]
     CanvasGroup slide4;
+    [SerializeField]
+    Button[] missionButtons;
     bool fadeInBackground;
     bool fadeInSlide1;
     bool fadeInSlide2;
     bool fadeInSlide3;
     bool fadeInSlide4;
-    // Start is called before the first frame update
+
     void Start()
     {
+        //Establish display
         missions.SetActive(false);
         mainMenu.SetActive(true);
         options.SetActive(false);
@@ -50,17 +53,28 @@ public class MainMenuScript : MonoBehaviour
         fadeInSlide2 = false;
         fadeInSlide3 = false;
         fadeInSlide4 = false;
+        //Load settings
         music.volume = PlayerPrefs.GetFloat("MusicVolume");
         introMonologue.volume = PlayerPrefs.GetFloat("VoiceVolume");
         musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
         SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
         voiceSlider.value = PlayerPrefs.GetFloat("VoiceVolume");
         sensitivitySlider.value = PlayerPrefs.GetFloat("MouseSensitivity");
+        //Enable level buttons based on persistent progress
+        if(PlayerPrefs.GetFloat("Progress") < 1)
+        {
+            PlayerPrefs.SetFloat("Progress", 1);
+        }
+        for(int i =0; i < missionButtons.Length; i++)
+        {
+            missionButtons[i].enabled = false;
+        }
+        SetLevels((int)PlayerPrefs.GetFloat("Progress"));
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //Fades are controlled by boolean variables
         if (fadeInBackground)
         {
             slideshowBackground.alpha += Time.deltaTime * 4;
@@ -102,7 +116,14 @@ public class MainMenuScript : MonoBehaviour
             slide4.alpha -= Time.deltaTime * 4;
         }
     }
-
+    void SetLevels(int levelsUnlocked)
+    {
+        for(int i = 0; i < levelsUnlocked; i++)
+        {
+            missionButtons[i].enabled = true;
+        }
+    }
+    //Save settings - called on slider values changed
     public void SaveMusicVolume()
     {
         PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
@@ -121,13 +142,16 @@ public class MainMenuScript : MonoBehaviour
     {
         PlayerPrefs.SetFloat("MouseSensitivity", sensitivitySlider.value);
     }
+    
+    //Timed calls toggle booleans to fade cutscene slideshow elements in and out at set times coinciding with audio
     public void LaunchIntroCinematic()
     {
+        //set music quiet durign monologue without affecting player prefs
         if (music.volume > 0.1)
         {
             music.volume = 0.1f;
         }
-        Invoke("LaunchLevel1", introMonologue.clip.length + 3);
+        Invoke("Launch1", introMonologue.clip.length + 3);
         mainMenu.SetActive(false);
         Invoke("PlayAudio", 0.5f);
         fadeInBackground = true;
@@ -142,20 +166,46 @@ public class MainMenuScript : MonoBehaviour
         Invoke("FadeBG", 39);
     }
 
+    //Many simple things are made into functions here to allow invoke for timing
     void PlayAudio()
     {
         introMonologue.Play();
-    }
-
-    public void LaunchLevel1()
-    {
-        SceneManager.LoadScene(1);
     }
 
     public void Missions()
     {
         mainMenu.SetActive(false);
         missions.SetActive(true);
+    }
+
+    public void Mission1()
+    {
+        fadeInBackground = true;
+        Invoke("Launch1", 1);
+        
+    }
+    public void Mission2()
+    {
+        fadeInBackground = true;
+        Invoke("Launch2", 1);
+    }
+    public void Mission3()
+    {
+        fadeInBackground = true;
+        Invoke("Launch3", 1);
+    }
+
+    public void Launch1()
+    {
+        SceneManager.LoadScene(1);
+    }
+    public void Launch2()
+    {
+        SceneManager.LoadScene(2);
+    }
+    public void Launch3()
+    {
+        SceneManager.LoadScene(3);
     }
 
     public void Options()
@@ -211,7 +261,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void Quit()
     {
-        Application.Quit();
-        UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();//Quits build
+        UnityEditor.EditorApplication.isPlaying = false;//Quits in editor playmode
     }
 }

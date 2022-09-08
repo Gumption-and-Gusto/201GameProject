@@ -9,16 +9,15 @@ public class CameraScript : MonoBehaviour
     Transform shipTransform;
     [SerializeField]
     Vector3 cameraOffset;
-    Vector3 mouse;
-        // Start is called before the first frame update
     void Start()
     {
+        //Copy ship location
         shipTransform = shipScript.shipTransform;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //Position camera relative to ship, but if ship is at the top of the tunnel, don't move the camera out of the tunnel (tunnel height maxes out at y=50 and height offset is +2)
         if (shipTransform.position.y < 48)
         {
             transform.position = shipTransform.position + cameraOffset;
