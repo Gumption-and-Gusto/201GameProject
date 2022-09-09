@@ -351,6 +351,7 @@
 "Assets/Scripts/MainMenuScript.cs"
 "Assets/Scripts/PauseScript.cs"
 "Assets/Scripts/ShipScript.cs"
+"Assets/Scripts/TurretScript.cs"
 "Assets/Scripts/VictoryScreenScript.cs"
 -langversion:9.0
 
