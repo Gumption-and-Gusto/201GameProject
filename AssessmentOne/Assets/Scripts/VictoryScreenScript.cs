@@ -25,7 +25,11 @@ public class VictoryScreenScript : MonoBehaviour
         //Timer in the ship script sets this screen to begin fading in
         if (shipScript.winTimer <= 0)
         {
-            PlayerPrefs.SetFloat("Progress", SceneManager.GetActiveScene().buildIndex + 1);
+            //Save progress if first time beating this level
+            if (PlayerPrefs.GetFloat("Progress") < SceneManager.GetActiveScene().buildIndex + 1)
+            {
+                PlayerPrefs.SetFloat("Progress", SceneManager.GetActiveScene().buildIndex + 1);
+            }
             victoryScreen.SetActive(true);
             succeeded = true;
             victoryScreen.GetComponent<CanvasGroup>().alpha += 0.7f * Time.deltaTime;

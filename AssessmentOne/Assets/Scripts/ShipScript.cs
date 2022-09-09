@@ -7,8 +7,8 @@ public class ShipScript : MonoBehaviour
     float timer = 3;
     public float deathTimer = 1;
     public float winTimer = 1;
-    bool deathTimerOn = false;
-    bool winTimerOn = false;
+    public bool deathTimerOn = false;
+    public bool winTimerOn = false;
     bool commanderVisible;
     Vector3 mouseMoves;
     [SerializeField]
@@ -43,6 +43,8 @@ public class ShipScript : MonoBehaviour
     AudioSource music;
     [SerializeField]
     Collider reactorTrigger;
+    [SerializeField]
+    Collider turretTrigger;
     [SerializeField]
     ParticleSystem steeringTop;
     [SerializeField]
@@ -85,6 +87,9 @@ public class ShipScript : MonoBehaviour
         winTimer = 1;
         body.GetComponent<Renderer>().enabled = true;
         sphere.GetComponent<Renderer>().enabled = true;
+
+        //Hide cursor
+        Cursor.visible = false;
     }   
 
     void Update()
@@ -174,6 +179,7 @@ public class ShipScript : MonoBehaviour
         body.GetComponent<Renderer>().enabled = false;
         sphere.GetComponent<Renderer>().enabled = false;
         exhaust.Stop();
+        Cursor.visible = true;
         //If collided with the target
         if (collision.gameObject == reactorStream && !deathTimerOn)
         {
@@ -221,12 +227,22 @@ public class ShipScript : MonoBehaviour
     //Passing through this collider trigger plays a line that points out the upcoming target
     private void OnTriggerExit(Collider other)
     {
-        if(other = reactorTrigger)
+        if(other == reactorTrigger)
         {
             voiceLines.clip = lines[Random.Range(8, 12)];
             FadeInCommander();
             Invoke("SayLine", 0.5f);
             Invoke("FadeOutCommander", 0.5f + voiceLines.clip.length);
+        }
+
+        else if (other == turretTrigger)
+        {
+        
+         voiceLines.clip = lines[Random.Range(12, 16)];
+         FadeInCommander();
+         Invoke("SayLine", 0.5f);
+         Invoke("FadeOutCommander", 0.5f + voiceLines.clip.length);
+        
         }
     }
 }

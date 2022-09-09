@@ -9,32 +9,52 @@ public class TurretScript : MonoBehaviour
     [SerializeField]
     LayerMask player;
     [SerializeField]
+    LayerMask cameraLayer;
+    [SerializeField]
     GameObject projectile;
     [SerializeField]
-    Transform projectileStart;
+    Transform origin;
+    [SerializeField]
+    ShipScript shipScript;
     bool reloaded;
     bool reloading;
+    bool inRange;
 
 
     void Start()
     {
-        reloaded = true;
+        reloaded = false;
         reloading = false;
+        inRange = false;
+        Invoke("Reload", 1);
     }
 
 
     void Update()
     {
-        if(!reloaded && !reloading)
-        {
-            Invoke("Reload", 1);
-            reloading = true;
-        }
-        else if(reloaded && Physics.CheckSphere(transform.position, 500, player)){
-            Vector3 aimDirection = ship.position - transform.position;
-            Quaternion aimRotation = Quaternion.LookRotation(aimDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, aimRotation, Time.deltaTime * 10);
-            Shoot();
+        if (!shipScript.deathTimerOn && !shipScript.winTimerOn) {
+            if (Physics.CheckSphere(transform.position, 500, player))
+            {
+                inRange = true;
+                Debug.Log(inRange);
+            }
+            else
+            {
+                inRange = false;
+            }
+            if (!reloaded && !reloading)
+            {
+                Invoke("Reload", 1);
+                reloading = true;
+            }
+            else if (reloaded && inRange && !Physics.CheckSphere(transform.position, 150, cameraLayer))
+            {
+                Shoot();
+            }
+            if (inRange)
+            {
+                transform.LookAt(ship);
+            }
         }
     }
     void Reload()
@@ -46,8 +66,8 @@ public class TurretScript : MonoBehaviour
     void Shoot()
     {
         reloaded = false;
-        GameObject shot = Instantiate(projectile, projectileStart);
-        Rigidbody shotRB = shot.GetComponent<Rigidbody>();
-        shotRB.AddRelativeForce(Vector3.forward * 100);
+        GameObject shot = Instantiate(projectile);
+        shot.transform.position = origin.position;
+        shot.transform.LookAt(ship);
     }
 }

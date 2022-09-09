@@ -53322,6 +53322,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathTimer: -0.0022549652
   winTimer: -0.0020293759
+  deathTimerOn: 0
+  winTimerOn: 0
   reactorStream: {fileID: 0}
   strafeSpeed: 1000000
   engineSpeed: 550000

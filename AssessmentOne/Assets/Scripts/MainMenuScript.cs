@@ -77,7 +77,7 @@ public class MainMenuScript : MonoBehaviour
         //Fades are controlled by boolean variables
         if (fadeInBackground)
         {
-            slideshowBackground.alpha += Time.deltaTime * 4;
+            slideshowBackground.alpha += Time.deltaTime * 8;
         }
         else
         {
@@ -120,7 +120,9 @@ public class MainMenuScript : MonoBehaviour
     {
         for(int i = 0; i < levelsUnlocked; i++)
         {
-            missionButtons[i].enabled = true;
+            if (i < missionButtons.Length){
+                missionButtons[i].enabled = true;
+             }
         }
     }
     //Save settings - called on slider values changed

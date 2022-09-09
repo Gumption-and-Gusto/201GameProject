@@ -57,12 +57,14 @@ public class PauseScript : MonoBehaviour
 
     void Pause()
     {
+        Cursor.visible = true;
         paused = true;
         pause.SetActive(true);
         Time.timeScale = 0;
     }
     public void Unpause()
     {
+        Cursor.visible = false;
         paused = false;
         pause.SetActive(false);
         options.SetActive(false);
